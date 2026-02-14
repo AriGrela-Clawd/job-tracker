@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}Métricas Detalladas - Job Application Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-chart-pie"></i> Métricas Detalladas</h1>
+        <a href="/exportar/csv" class="btn btn-secondary">
+            <i class="fas fa-download"></i> Exportar Datos
+        </a>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="stats-grid metrics-overview">
+        <div class="metric-card">
+            <div class="metric-icon bg-primary">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+            <div class="metric-content">
+                <h4>Total Postulaciones</h4>
+                <span class="metric-value">{{ stats.total }}</span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-icon bg-success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="metric-content">
+                <h4>Con Respuesta</h4>
+                <span class="metric-value">{{ stats.respondidos }}</span>
+                <span class="metric-percent">{{ stats.tasa_respuesta }}%</span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-icon bg-warning">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="metric-content">
+                <h4>Tiempo Promedio</h4>
+                <span class="metric-value">{{ stats.tiempo_promedio_respuesta }}</span>
+                <span class="metric-unit">días</span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-icon bg-info">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="metric-content">
+                <h4>Ofertas Recibidas</h4>
+                <span class="metric-value">{{ stats.estado_counts.get('Oferta', 0) }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pipeline Visualization -->
+    <div class="section">
+        <h2><i class="fas fa-stream"></i> Pipeline de Conversión</h2>
+        <div class="pipeline-visualization">
+            {% set total = stats.total %}
+            {% for estado in estados %}
+            {% if estado != 'Sin respuesta' and estado != 'Aceptado' and estado != 'Rechazado' %}
+            {% set count = stats.estado_counts.get(estado, 0) %}
+            {% set percentage = (count / total * 100) if total > 0 else 0 %}
+            <div class="pipeline-bar-item">
+                <div class="bar-header">
+                    <span class="bar-name">{{ estado }}</span>
+                    <span class="bar-count">{{ count }}</span>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-fill status-{{ estado.lower().replace(' ', '-') }}" 
+                         style="width: {{ percentage }}%;"></div>
+                </div>
+                <span class="bar-percent">{{ percentage|round(1) }}%</span>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Status Breakdown -->
+    <div class="section">
+        <h2><i class="fas fa-chart-bar"></i> Desglose por Estado</h2>
+        <div class="status-breakdown">
+            <div class="breakdown-table-card">
+                <table class="breakdown-table">
+                    <thead>
+                        <tr>
+                            <th>Estado</th>
+                            <th>Cantidad</th>
+                            <th>Porcentaje</th>
+                            <th>Visual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for estado in estados %}
+                        {% set count = stats.estado_counts.get(estado, 0) %}
+                        {% set percentage = (count / stats.total * 100) if stats.total > 0 else 0 %}
+                        <tr>
+                            <td>
+                                <span class="status-badge status-{{ estado.lower().replace(' ', '-') }}">
+                                    {{ estado }}
+                                </span>
+                            </td>
+                            <td><strong>{{ count }}</strong></td>
+                            <td>{{ percentage|round(1) }}%</td>
+                            <td>
+                                <div class="mini-bar">
+                                    <div class="mini-bar-fill status-{{ estado.lower().replace(' ', '-') }}" 
+                                         style="width: {{ percentage }}%;"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Summary -->
+    <div class="section">
+        <h2><i class="fas fa-calendar-alt"></i> Resumen de Actividad</h2>
+        <div class="activity-grid">
+            <div class="activity-card">
+                <div class="activity-icon">
+                    <i class="fas fa-calendar-week"></i>
+                </div>
+                <div class="activity-info">
+                    <h4>Esta Semana</h4>
+                    <span class="activity-count">{{ stats.esta_semana }}</span>
+                    <span class="activity-label">postulaciones</span>
+                </div>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon">
+                    <i class="fas fa-calendar"></i>
+                </div>
+                <div class="activity-info">
+                    <h4>Este Mes</h4>
+                    <span class="activity-count">{{ stats.este_mes }}</span>
+                    <span class="activity-label">postulaciones</span>
+                </div>
+            </div>
+
+            <div class="activity-card highlight">
+                <div class="activity-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="activity-info">
+                    <h4>Sin Respuesta >14 días</h4>
+                    <span class="activity-count">{{ stats.sin_respuesta_14dias }}</span>
+                    <span class="activity-label">postulaciones</span>
+                </div>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="activity-info">
+                    <h4>Seguimientos</h4>
+                    <span class="activity-count">{{ stats.seguimientos_pendientes }}</span>
+                    <span class="activity-label">pendientes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Metrics -->
+    <div class="section">
+        <h2><i class="fas fa-trophy"></i> Métricas de Éxito</h2>
+        <div class="success-metrics">
+            <div class="success-metric">
+                <div class="success-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="success-info">
+                    <h4>Tasa de Entrevistas</h4>
+                    {% set tasa_entrevistas = (stats.estado_counts.get('Entrevista', 0) / stats.total * 100) if stats.total > 0 else 0 %}
+                    <span class="success-value">{{ tasa_entrevistas|round(1) }}%</span>
+                    <p>{{ stats.estado_counts.get('Entrevista', 0) }} postulaciones llegaron a entrevista</p>
+                </div>
+            </div>
+
+            <div class="success-metric">
+                <div class="success-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <div class="success-info">
+                    <h4>Tasa de Ofertas</h4>
+                    {% set tasa_ofertas = (stats.estado_counts.get('Oferta', 0) / stats.total * 100) if stats.total > 0 else 0 %}
+                    <span class="success-value">{{ tasa_ofertas|round(1) }}%</span>
+                    <p>{{ stats.estado_counts.get('Oferta', 0) }} ofertas recibidas</p>
+                </div>
+            </div>
+
+            <div class="success-metric">
+                <div class="success-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="success-info">
+                    <h4>Tasa de Rechazos</h4>
+                    {% set tasa_rechazos = (stats.estado_counts.get('Rechazado', 0) / stats.total * 100) if stats.total > 0 else 0 %}
+                    <span class="success-value">{{ tasa_rechazos|round(1) }}%</span>
+                    <p>{{ stats.estado_counts.get('Rechazado', 0) }} postulaciones rechazadas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips Section -->
+    <div class="section tips-section">
+        <h2><i class="fas fa-lightbulb"></i> Tips para Mejorar</h2>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <i class="fas fa-clock"></i>
+                <h4>Seguimiento Regular</h4>
+                <p>Si no recibes respuesta en 7-10 días hábiles, considera enviar un email de seguimiento profesional.</p>
+            </div>
+            <div class="tip-card">
+                <i class="fas fa-chart-line"></i>
+                <h4>Analiza tu Pipeline</h4>
+                <p>Si muchas postulaciones quedan en "En revisión", podría ser tu CV o carta de presentación.</p>
+            </div>
+            <div class="tip-card">
+                <i class="fas fa-users"></i>
+                <h4>Networking</h4>
+                <p>Utiliza LinkedIn para conectar con reclutadores antes de postularte.</p>
+            </div>
+            <div class="tip-card">
+                <i class="fas fa-bullseye"></i>
+                <h4>Personaliza</h4>
+                <p>Adapta tu CV y carta a cada oferta específica. Las postulaciones genéricas tienen menos éxito.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

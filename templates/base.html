@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Job Application Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <i class="fas fa-briefcase"></i>
+                <span>JobTracker</span>
+            </a>
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/" {% if request.url.path == '/' %}class="active"{% endif %}>
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a></li>
+                <li><a href="/postulaciones" {% if '/postulaciones' in request.url.path %}class="active"{% endif %}>
+                    <i class="fas fa-list"></i> Postulaciones
+                </a></li>
+                <li><a href="/postulaciones/nueva">
+                    <i class="fas fa-plus-circle"></i> Nueva
+                </a></li>
+                <li><a href="/metricas" {% if request.url.path == '/metricas' %}class="active"{% endif %}>
+                    <i class="fas fa-chart-pie"></i> Métricas
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>Job Application Tracker - Creado para Ari ❤️</p>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

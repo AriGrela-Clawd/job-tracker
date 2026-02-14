@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Job Application Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-chart-line"></i> Dashboard</h1>
+        <p class="subtitle">Resumen de tu búsqueda laboral</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card primary">
+            <div class="stat-icon">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ stats.total }}</h3>
+                <p>Total Postulaciones</p>
+            </div>
+        </div>
+
+        <div class="stat-card success">
+            <div class="stat-icon">
+                <i class="fas fa-reply"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ stats.tasa_respuesta }}%</h3>
+                <p>Tasa de Respuesta</p>
+                <small>{{ stats.respondidos }} con respuesta</small>
+            </div>
+        </div>
+
+        <div class="stat-card warning">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-week"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ stats.esta_semana }}</h3>
+                <p>Esta Semana</p>
+            </div>
+        </div>
+
+        <div class="stat-card info">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ stats.este_mes }}</h3>
+                <p>Este Mes</p>
+            </div>
+        </div>
+
+        <div class="stat-card secondary">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ stats.tiempo_promedio_respuesta }}</h3>
+                <p>Días Respuesta</p>
+                <small>Promedio</small>
+            </div>
+        </div>
+
+        <div class="stat-card danger">
+            <div class="stat-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ stats.sin_respuesta_14dias }}</h3>
+                <p>Sin Respuesta</p>
+                <small>>14 días</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pipeline Section -->
+    <div class="section pipeline-section">
+        <h2><i class="fas fa-stream"></i> Pipeline de Postulaciones</h2>
+        <div class="pipeline">
+            {% for estado in estados %}
+            {% if estado != 'Sin respuesta' %}
+            <a href="/postulaciones?estado={{ estado }}" class="pipeline-step {% if stats.estado_counts[estado] > 0 %}has-items{% endif %}">
+                <div class="step-count">{{ stats.estado_counts[estado] or 0 }}</div>
+                <div class="step-name">{{ estado }}</div>
+                {% if not loop.last %}
+                <div class="step-arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                {% endif %}
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="two-column">
+        <!-- Follow-ups -->
+        <div class="section followups-section">
+            <div class="section-header">
+                <h2><i class="fas fa-bell"></i> Seguimientos Pendientes</h2>
+                <span class="badge {% if seguimientos|length > 0 %}badge-warning{% else %}badge-success{% endif %}">
+                    {{ seguimientos|length }}
+                </span>
+            </div>
+            
+            {% if seguimientos %}
+            <div class="followups-list">
+                {% for s in seguimientos %}
+                <a href="/postulaciones/{{ s.id }}" class="followup-item">
+                    <div class="followup-info">
+                        <strong>{{ s.empresa }}</strong>
+                        <span class="followup-puesto">{{ s.puesto }}</span>
+                    </div>
+                    <div class="followup-meta">
+                        <span class="followup-date {% if s.fecha_seguimiento and s.fecha_seguimiento <= now().date() %}overdue{% endif %}">
+                            <i class="fas fa-calendar"></i>
+                            {{ s.fecha_seguimiento.strftime('%d/%m/%Y') if s.fecha_seguimiento else 'Sin fecha' }}
+                        </span>
+                        <span class="status-badge status-{{ s.estado.lower().replace(' ', '-') }}">{{ s.estado }}</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-check-circle"></i>
+                <p>¡No hay seguimientos pendientes!</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section actions-section">
+            <h2><i class="fas fa-bolt"></i> Acciones Rápidas</h2>
+            <div class="quick-actions">
+                <a href="/postulaciones/nueva" class="action-card">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Nueva Postulación</span>
+                </a>
+                <a href="/postulaciones?estado=Entrevista" class="action-card">
+                    <i class="fas fa-handshake"></i>
+                    <span>Ver Entrevistas</span>
+                    {% if stats.estado_counts['Entrevista'] > 0 %}
+                    <span class="action-badge">{{ stats.estado_counts['Entrevista'] }}</span>
+                    {% endif %}
+                </a>
+                <a href="/postulaciones?estado=Oferta" class="action-card">
+                    <i class="fas fa-trophy"></i>
+                    <span>Ver Ofertas</span>
+                    {% if stats.estado_counts['Oferta'] > 0 %}
+                    <span class="action-badge badge-success">{{ stats.estado_counts['Oferta'] }}</span>
+                    {% endif %}
+                </a>
+                <a href="/exportar/csv" class="action-card">
+                    <i class="fas fa-download"></i>
+                    <span>Exportar CSV</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="section">
+        <div class="section-header">
+            <h2><i class="fas fa-history"></i> Actividad Reciente</h2>
+            <a href="/postulaciones" class="btn btn-sm btn-secondary">Ver Todas</a>
+        </div>
+        <p class="text-muted">Las postulaciones más recientes aparecerán aquí</p>
+    </div>
+</div>
+{% endblock %}
