@@ -1,63 +1,37 @@
 # 🎯 Job Application Tracker
 
-> Sistema de seguimiento de postulaciones laborales diseñado para organizar y optimizar tu búsqueda de empleo.
+Sistema de seguimiento de postulaciones laborales diseñado para organizar y monitorear tu búsqueda de empleo de manera eficiente.
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-green.svg)
 ![SQLite](https://img.shields.io/badge/SQLite-3-orange.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
----
-
 ## ✨ Características
 
-### 📋 Gestión de Postulaciones
-- **CRUD completo**: Crear, leer, actualizar y eliminar postulaciones
-- **Campos detallados**: Empresa, puesto, URL, fechas, contactos, salario, ubicación
-- **Estados del pipeline**: Postulado → En revisión → Entrevista → Oferta → Rechazado/Aceptado
-- **Sistema de tags**: Categoriza tus postulaciones
-- **Notas**: Registra feedback y detalles importantes
-
-### 📊 Dashboard y Métricas
-- **Resumen visual**: Total de postulaciones, tasa de respuesta, actividad reciente
-- **Pipeline visual**: Ver tu progreso en cada etapa
-- **Métricas detalladas**:
-  - Total de postulaciones
-  - Tasa de respuesta (%)
-  - Postulaciones esta semana/mes
-  - Tiempo promedio de respuesta
-  - Postulaciones sin respuesta >14 días
-- **Seguimientos pendientes**: Alertas de recordatorios
-
-### 🔍 Filtros y Búsqueda
-- Buscar por empresa, puesto o notas
-- Filtrar por estado
-- Filtrar por empresa específica
-- Paginación de resultados
-
-### 📁 Import/Export
-- **Exportar a CSV**: Backup de todas tus postulaciones
-- **Importar desde CSV**: Carga masiva de datos
-
-### 💻 Interfaz de Usuario
-- **Diseño moderno**: Interfaz limpia y profesional
-- **Responsive**: Funciona en desktop, tablet y móvil
-- **Tema claro**: Colores agradables y buen contraste
-- **Navegación intuitiva**: Menú claro y accesible
-
----
+- 📊 **Dashboard interactivo** con métricas en tiempo real
+- 📝 **CRUD completo** de postulaciones laborales
+- 🏷️ **Sistema de estados**: Postulado → En revisión → Entrevista → Oferta → Rechazado/Aceptado
+- 🔔 **Seguimientos** con fechas de recordatorio
+- 📈 **Métricas detalladas**: tasa de respuesta, tiempo promedio, pipeline de conversión
+- 🔍 **Búsqueda y filtros** avanzados
+- 📤 **Import/Export** CSV
+- 📱 **Diseño responsive** para móvil y desktop
+- 🎨 **Interfaz moderna** con tema oscuro
 
 ## 🚀 Instalación
 
 ### Requisitos
+
 - Python 3.8 o superior
-- pip (gestor de paquetes de Python)
+- pip
 
-### Pasos de instalación
+### Pasos
 
-1. **Clonar o descargar el proyecto**
+1. **Clonar el repositorio**
 ```bash
-cd ~/clawd/proyectos/job-tracker
+git clone https://github.com/AriGrela-Clawd/job-tracker.git
+cd job-tracker
 ```
 
 2. **Crear entorno virtual (opcional pero recomendado)**
@@ -73,191 +47,155 @@ venv\Scripts\activate  # Windows
 pip install -r requirements.txt
 ```
 
-4. **Iniciar la aplicación**
+4. **Ejecutar la aplicación**
 ```bash
 python main.py
 ```
 
-5. **Abrir en el navegador**
+5. **Abrir en navegador**
 ```
 http://localhost:8000
 ```
 
----
+## 📖 Uso
 
-## 📖 Guía de Uso
+### Dashboard
+El panel principal muestra:
+- Total de postulaciones
+- Tasa de respuesta
+- Postulaciones esta semana/mes
+- Pipeline visual de estados
+- Seguimientos pendientes
 
-### Crear una Nueva Postulación
-
-1. Haz clic en **"Nueva Postulación"** en el menú o en el botón verde del dashboard
-2. Completa los campos obligatorios:
-   - **Empresa**: Nombre de la empresa
-   - **Puesto**: Título del puesto
-   - **Fecha de postulación**: Cuando enviaste tu aplicación
-3. Agrega información adicional opcional:
+### Agregar Postulación
+1. Click en "Nueva" en la navbar
+2. Completar los campos:
+   - Empresa y puesto (obligatorios)
    - URL de la oferta
-   - Estado actual
+   - Estado inicial
+   - Fecha de postulación
    - Fecha de seguimiento (para recordatorios)
-   - Ubicación y modalidad
-   - Datos de contacto del reclutador
-   - Tags para categorizar
-   - Notas
+   - Información adicional (ubicación, modalidad, salario, contacto, notas)
+3. Guardar
 
-### Actualizar el Estado
+### Gestionar Estados
+- Cambiar estado rápidamente desde el detalle de postulación
+- Los estados disponibles son: Postulado, En revisión, Entrevista, Oferta, Rechazado, Aceptado
 
-1. Ve a la lista de postulaciones o al detalle de una postulación
-2. Usa los botones de estado rápido o edita la postulación
-3. Los estados disponibles son:
-   - **Postulado**: Acabas de enviar tu CV
-   - **En revisión**: La empresa está revisando tu perfil
-   - **Entrevista**: Tienes una entrevista programada
-   - **Oferta**: Te hicieron una oferta
-   - **Rechazado**: No fueron seleccionados
-   - **Aceptado**: ¡Conseguiste el trabajo!
+### Métricas
+Visita la sección "Métricas" para ver:
+- Pipeline de conversión
+- Desglose por estado
+- Tasa de entrevistas y ofertas
+- Tips para mejorar tu búsqueda
 
-### Seguimientos y Recordatorios
+### Exportar Datos
+- Desde el dashboard o métricas, click en "Exportar CSV"
+- Obtén todos tus datos en formato CSV para análisis externo
 
-1. Al crear/editar una postulación, establece una **"Fecha de seguimiento"**
-2. El dashboard mostrará alertas cuando sea necesario hacer seguimiento
-3. Las postulaciones sin respuesta después de 14 días aparecen destacadas
-
-### Exportar tus Datos
-
-1. Ve a **"Métricas"** en el menú
-2. Haz clic en **"Exportar Datos"**
-3. Se descargará un archivo CSV con todas tus postulaciones
-
-### Importar Datos
-
-1. Prepara un archivo CSV con las columnas correspondientes
-2. Usa la función de importación (API disponible)
-
----
-
-## 🗂️ Estructura del Proyecto
+## 🏗️ Arquitectura
 
 ```
 job-tracker/
-├── main.py              # Aplicación FastAPI principal
-├── database.py          # Modelos y operaciones de base de datos
-├── requirements.txt     # Dependencias del proyecto
-├── README.md           # Este archivo
-├── data/               # Base de datos SQLite (se crea automáticamente)
-├── templates/          # Plantillas HTML Jinja2
-│   ├── base.html       # Plantilla base
-│   ├── dashboard.html  # Panel principal
-│   ├── postulaciones.html  # Lista de postulaciones
-│   ├── form.html       # Formulario crear/editar
-│   ├── detail.html     # Detalle de postulación
-│   └── metricas.html   # Métricas detalladas
-└── static/             # Archivos estáticos
-    ├── css/
-    │   └── style.css   # Estilos CSS
-    └── js/
-        └── app.js      # JavaScript principal
+├── main.py              # FastAPI application
+├── database.py          # SQLAlchemy models & operations
+├── requirements.txt     # Dependencies
+├── README.md           # This file
+├── static/
+│   ├── css/
+│   │   └── style.css   # Stylesheet (tema oscuro)
+│   └── js/
+│       └── app.js      # Frontend JavaScript
+└── templates/          # Jinja2 templates
+    ├── base.html
+    ├── dashboard.html
+    ├── postulaciones.html
+    ├── form.html
+    ├── detail.html
+    └── metricas.html
 ```
 
----
+## 🛠️ Stack Tecnológico
 
-## 🔧 API Endpoints
+- **Backend**: FastAPI (Python)
+- **Base de datos**: SQLite con SQLAlchemy ORM
+- **Frontend**: Jinja2 Templates + Vanilla JS
+- **Estilos**: CSS3 custom (tema oscuro)
+- **Iconos**: Font Awesome
 
-La aplicación expone los siguientes endpoints:
+## 🔧 Configuración
 
-### Web Interface
-- `GET /` - Dashboard principal
-- `GET /postulaciones` - Lista de postulaciones
-- `GET /postulaciones/nueva` - Formulario de creación
-- `GET /postulaciones/{id}` - Detalle de postulación
-- `GET /postulaciones/{id}/editar` - Formulario de edición
-- `GET /metricas` - Métricas detalladas
+### Variables de entorno
 
-### API JSON
-- `GET /api/stats` - Estadísticas del dashboard
-- `GET /api/seguimientos` - Seguimientos pendientes
+Crea un archivo `.env` opcional:
 
-### Data Operations
-- `GET /exportar/csv` - Exportar todas las postulaciones a CSV
-- `POST /importar/csv` - Importar postulaciones desde CSV
-
----
-
-## 💡 Tips para Maximizar el Uso
-
-### 1. Sé Consistente
-- Registra cada postulación inmediatamente después de enviarla
-- Actualiza los estados regularmente
-- Usa las fechas de seguimiento para no perder oportunidades
-
-### 2. Usa Tags Efectivamente
-- Tags como: `remoto`, `senior`, `fintech`, `startup`
-- Te permitirán filtrar y analizar por categorías
-
-### 3. Analiza tus Métricas
-- Revisa regularmente tu tasa de respuesta
-- Identifica en qué etapa del pipeline te quedas
-- Ajusta tu estrategia basado en los datos
-
-### 4. Haz Seguimiento Proactivo
-- Establece fechas de seguimiento 7-10 días después de postularte
-- Si no hay respuesta en 14 días, considera enviar un email de seguimiento
-
----
-
-## 🛠️ Desarrollo
-
-### Variables de Entorno
-
-Puedes configurar las siguientes variables:
-
-```bash
-# Base de datos (opcional, por defecto SQLite local)
+```env
 DATABASE_URL=sqlite:///data/job_tracker.db
-
-# Puerto (opcional, por defecto 8000)
-PORT=8000
 ```
 
-### Ejecutar en modo desarrollo
+### Cambiar puerto
 
-```bash
-# Con recarga automática
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+Edita `main.py`:
+```python
+uvicorn.run(app, host="0.0.0.0", port=8000)  # Cambia el puerto aquí
 ```
 
----
+## 📊 Modelo de Datos
+
+### Postulación
+- `id`: Identificador único
+- `empresa`: Nombre de la empresa
+- `puesto`: Título del puesto
+- `url_oferta`: Enlace a la oferta
+- `fecha_postulacion`: Fecha de postulación
+- `estado`: Estado actual
+- `notas`: Notas y seguimiento
+- `fecha_seguimiento`: Fecha para recordatorio
+- `fecha_respuesta`: Fecha de respuesta recibida
+- `tags`: Etiquetas separadas por comas
+- `contacto_nombre`: Nombre del reclutador
+- `contacto_email`: Email del contacto
+- `salario_ofrecido`: Rango salarial
+- `ubicacion`: Ubicación del puesto
+- `modalidad`: Remoto/Híbrido/Presencial
+
+## 🎯 Tips de Uso
+
+1. **Sé consistente**: Registra cada postulación inmediatamente
+2. **Usa seguimientos**: Establece fechas de seguimiento para no olvidar
+3. **Agrega notas**: Documenta feedback y detalles importantes
+4. **Revisa métricas**: Analiza tu pipeline semanalmente
+5. **Exporta backups**: Guarda tus datos regularmente
+
+## 🔮 Roadmap
+
+- [ ] Integración con LinkedIn
+- [ ] Notificaciones por email
+- [ ] Gráficos interactivos
+- [ ] App móvil (PWA)
+- [ ] Autenticación de usuarios
+- [ ] Múltiples perfiles de búsqueda
 
 ## 🤝 Contribuir
 
-Este es un proyecto personal para Ari, pero las sugerencias son bienvenidas.
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el repositorio
+2. Crea una rama (`git checkout -b feature/nueva-feature`)
+3. Commit tus cambios (`git commit -am 'Agrega nueva feature'`)
+4. Push a la rama (`git push origin feature/nueva-feature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+MIT License - ver [LICENSE](LICENSE) para más detalles.
+
+## 🌟 Creado para
+
+**Ari Grela** - Técnico en audiovisuales y estudiante de programación en búsqueda de nuevas oportunidades laborales.
 
 ---
 
-## 📄 Licencia
-
-MIT License - Libre para usar y modificar.
-
----
-
-## 🙏 Créditos
-
-Creado con ❤️ para Ari Grela como herramienta para optimizar su búsqueda laboral.
-
-**Stack tecnológico:**
-- [FastAPI](https://fastapi.tiangolo.com/) - Framework web moderno
-- [SQLAlchemy](https://www.sqlalchemy.org/) - ORM para Python
-- [Jinja2](https://jinja.palletsprojects.com/) - Templating engine
-- [Inter](https://fonts.google.com/specimen/Inter) - Tipografía
-- [Font Awesome](https://fontawesome.com/) - Iconos
-
----
-
-## 📞 Soporte
-
-Si encuentras algún problema o tienes sugerencias:
-1. Revisa este README
-2. Verifica que cumples con todos los requisitos
-3. Revisa los logs en la consola
-
----
-
-**¡Éxito en tu búsqueda laboral! 🚀**
+<p align="center">
+  <strong>Job Application Tracker</strong> - Organiza tu búsqueda, mejora tus resultados 🎯
+</p>
